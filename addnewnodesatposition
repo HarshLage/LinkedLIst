@@ -1,0 +1,166 @@
+#include <iostream>
+#include<bits/stdc++.h>
+using namespace std;
+
+class Node{
+  public:
+  int data;
+  Node * next;
+
+  Node(){
+    cout<<"i am inside default constuctor"<<endl;
+    this->next = NULL;
+  }
+  Node(int data){
+    cout<<"i am inside paramiterized constructor"<<endl;
+    this -> data = data;
+    this -> next  = NULL;
+
+  }
+};
+
+void print(Node *head ){
+   Node *temp = head;
+  while(temp != NULL){
+ 
+  cout<<temp->data<<"->";
+  temp = temp -> next;
+
+  }
+}
+void insertAThead(Node * &head, Node* &tail, int data){
+  if(head==NULL){
+    //create a new node first
+    Node * newNode = new Node(data);
+    //assining head to newNode
+    head = newNode;
+    tail = newNode;
+  }
+  //for non - empty linked list
+  else{
+  //creation of node
+  Node * newNode = new Node(data);
+  //assining of newnode
+  newNode->next = head;
+  //assining head
+  head = newNode;
+  }
+}
+void insertAttail(Node * &head , Node *&tail , int data){
+  if(head == NULL){
+    //creating a NOde
+    Node * newNode = new Node(data);
+    //assining
+    head = newNode;
+    tail = newNode;
+  }
+  else{
+    Node  *newNode = new Node(data);
+
+    tail->next = newNode;
+    tail = newNode;
+
+  }
+}
+// create tail without assinging in main
+void tailInsert(Node *&head , Node*&tail){
+  Node * temp = head;
+  while(temp!=NULL){
+    temp = temp -> next;
+  }
+  tail  = head;
+}
+int  len(Node *head){
+  int count = 0;
+  while(head!=NULL){
+    count++;
+    head = head->next;
+
+  }
+  return count;
+
+}
+void insertPosition(Node * head,Node *tail , int data , int position){
+   //insertathead
+  if(position <= 1){
+    insertAThead(head,tail,data);
+    return;
+  }
+  int length = len(head);
+  //insertattail
+  if(position >= length){
+    insertAttail(head,tail,data);
+    return;
+  }
+  // insert at position
+  else{
+    Node * newNode = new Node(data);
+    Node * curr = head;
+    Node* prev = NULL;
+
+    while(position!=1){
+      prev = curr;
+      curr = curr -> next;
+      position--;
+      
+    }
+    newNode -> next = curr;
+    prev -> next = newNode;
+
+  }
+}
+int main() {
+  Node * head = NULL;
+  Node * tail  = NULL;
+
+  insertAThead(head,tail,20);
+  insertAThead(head,tail,50);
+  insertAThead(head,tail,40);
+  insertAThead(head,tail,50);
+  print(head);
+
+  cout<<endl;
+  insertAttail(head,tail,300);
+  print(head);
+  cout<<"***"<<endl;
+  cout<<len(head);
+
+  //insert at position
+  insertPosition(head,tail,7,4);
+   print(head);
+
+
+  // Node *first = new Node(3);
+  // Node *second = new Node(4);
+  // Node *third = new Node(4);
+  // Node *fourth = new Node(4);
+
+  // first -> next = second;
+  // second -> next = third;
+  // third -> next = fourth;
+  // fourth -> next = NULL;
+  
+  // //creating node
+  // Node *head = first;
+  // int count = 0;
+
+  // //printing
+  // print(head,count);
+  // cout<<endl;
+  // cout<<count;
+  // // creating tail
+  // Node *tail = fourth;
+
+  // insertAThead(head,tail,8);
+  // print(head,count);
+
+
+  // insertAttail(head,tail,500);
+  // print(head,count);
+  
+
+
+  
+
+  return 0;
+}
