@@ -1,0 +1,146 @@
+#include <iostream>
+using namespace std;
+class Node{
+  public:
+  int data;
+  Node *prev;
+  Node *next;
+
+  Node(){
+    this->prev = NULL;
+    this->next = NULL;
+  }
+  Node(int data){
+    this->data = data;
+    this->next =NULL;
+    this->prev = NULL;
+  }
+};
+
+int findLen(Node *head){
+  int count = 0;
+  Node * temp = head;
+  while(temp!=NULL){
+    count++;
+    temp  = temp -> next;
+  }
+  return count;
+}
+void print(Node * head){
+  Node* temp  = head;
+  while(temp!=NULL){
+    cout<<temp->data<<"->";
+    temp = temp -> next;
+  }
+}
+void insertAThead(Node * &head , Node *&tail , int data){
+  if(head==NULL){
+    Node * newNode = new Node(data);
+    head = newNode;
+    tail = newNode; // Update tail when the list is initially empty
+  }
+  else{
+    Node * newNode = new Node(data);
+    newNode -> next = head;
+    head -> prev = newNode;
+    head = newNode;
+  }
+}
+void insertATail(Node * &head , Node *&tail , int data){
+  if(tail==NULL){
+    Node*newNode = new Node(data);
+    head = newNode;
+    tail = newNode;
+  }
+  else{
+    Node *newNode = new Node(data);
+    tail->next = newNode;
+    newNode->prev = tail;
+    tail = newNode;
+  }
+}
+
+void insertATmiddle(Node *&head , Node *&tail , int data , int position){
+  if(position <=1){
+    insertAThead(head,tail,data);
+    
+  }
+  int length = findLen(head);
+  if(position == length + 1 ){
+    insertATail(head,tail,position);
+   
+
+  }
+  if(head==NULL || tail ==NULL){
+     Node*newNode = new Node(data);
+    head = newNode;
+    tail = newNode;
+
+  }
+  else{
+    Node * newNode = new Node(data);
+    Node * curr = head;
+    Node * previous = NULL;
+
+    while(position!=1){
+      previous = curr;
+      curr = curr -> next;
+      position--;
+
+    }
+    newNode -> prev = previous;
+    newNode -> next = curr;
+    previous -> next = newNode;
+    curr -> prev = newNode;
+    
+
+  }
+}
+void Deleteopera(Node  *&head , Node *&tail , int position){
+  if(head==NULL){
+    cout<<"cannot be deleted"<<endl;
+    return;
+  }
+  if(head == tail){
+      Node * temp = head;
+      delete temp;
+      head = NULL;
+      tail = NULL;
+    }
+
+  int len = findLen(head);
+
+  if(position==len){
+    Node *prevNode = tail->prev;
+    prevNode -> next = NULL;
+    tail->prev = NULL;
+    delete tail;
+    tail = prevNode;
+  }
+  if(position ==  1){
+    Node * temp = head;
+    
+    head  = head -> next;
+    temp -> next = NULL;
+
+    head -> prev  = NULL;
+    delete temp;
+
+  }
+}
+int main() {
+  Node * head = NULL;
+  Node * tail = NULL;
+
+  insertAThead(head , tail , 50);
+  insertAThead(head , tail , 40);
+  insertAThead(head , tail , 30);
+  insertAThead(head , tail , 20);
+  insertATail(head,tail,100);
+  insertATmiddle(head,tail,4000,2);
+
+  Deleteopera(head,tail,1);
+
+  print(head);
+   
+}
