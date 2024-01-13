@@ -1,0 +1,189 @@
+#include<iostream>
+using namespace std;
+class Node{
+  public :
+   int data;
+   Node * prev;
+   Node * next;
+  Node(){
+    this->prev = NULL;
+    this->next = NULL;
+  }
+  Node(int data){
+    this -> data  = data;
+    this -> prev = NULL;
+    this -> next = NULL;
+  }
+};
+void print(Node * head){
+  Node * temp = head;
+  while(temp != NULL){
+    cout<<temp->data<<"->";
+    temp = temp -> next;
+  }
+
+}
+int findlen(Node * head){
+  Node * temp = head;
+  int count = 0;
+  while(temp!=NULL){
+      count++;
+      temp = temp -> next;
+  }
+  return count;
+}
+void insertHead(Node * &head , Node *&tail , int data){
+  if(head == NULL){
+    Node * newNode = new Node(data);
+    head = newNode;
+    tail = newNode;
+  }
+
+  else{
+    Node * newNode = new Node(data);
+    newNode -> next = head;
+    head -> prev = newNode;
+    head = newNode;
+  }
+}
+void inserttail(Node * &head , Node * &tail , int data ){
+  if(head == NULL ){
+    Node * newNode = new Node(data);
+    head = newNode;
+    tail = newNode;
+  }
+
+  else{
+    Node * newNode = new Node(data);
+    tail -> next = newNode;
+    newNode -> prev = tail;
+    tail = newNode;
+  }
+}
+void insertATmiddle(Node * &head , Node * &tail , int data , int position){
+
+  if(head == NULL){
+    Node * newNode = new Node(data);
+    head = newNode;
+    tail = newNode;
+  } 
+
+  else if(position <= 1){
+    insertHead(head,tail,data);
+  }
+
+  else if(position == findlen(head) + 1){
+    inserttail(head,tail,data);
+
+  }
+  else{
+  
+   Node * currNode = head;
+   Node * prevNode = NULL;
+
+   while(position!=1){
+    prevNode = currNode;
+    currNode = currNode -> next;
+    position--;
+   }
+   Node * newNode = new Node(data);
+  
+   
+   newNode  -> prev = prevNode;
+   newNode  -> next = currNode;
+   prevNode -> next = newNode;
+   currNode -> prev = newNode;
+
+
+
+  }
+}
+void deleteoperations(Node * &head , Node * &tail , int position){
+       if(position == 1){
+        Node * temp = head;
+        head = head -> next ;
+        temp -> next = NULL;
+        head -> prev = NULL;
+        delete temp;
+       }
+       else if ( position == findlen(head)){
+         Node * temp = tail;
+         tail = tail -> prev;
+         tail -> next = NULL;
+         temp -> prev = NULL;
+         delete temp;
+     
+
+       }
+
+       else{
+        Node * currNode = head;
+        Node * prevNode  = NULL;
+
+        while(position != 1){
+            prevNode = currNode;
+            currNode = currNode -> next;
+            position--;
+        }
+        Node * nextNode = currNode -> next;
+        prevNode -> next = nextNode;
+        currNode -> next = NULL;
+        currNode->prev = NULL;
+       
+        nextNode -> prev = prevNode;
+        delete currNode;
+       }
+    
+}
+void deleteNodeByVal(Node * &head , Node *&tail,int value){
+       Node * temp = head;
+    if(head==NULL){
+        cout<<"cannot be deleted"<<endl;
+    }
+ 
+   else  if(temp -> data == value){
+         head = head -> next;
+         temp -> next = NULL;
+         head -> prev = NULL;
+         delete temp;    
+    }
+   
+    else if(tail -> data == value){
+       Node * help = tail;
+       tail = tail -> prev;
+       help -> prev = NULL;
+       tail -> next = NULL;
+       delete help;
+             
+   }
+
+  else{
+    while(temp->data != value){
+        temp = temp -> next;
+    }
+    Node * currNode = temp;
+    Node * nextNode = currNode -> next;
+    Node * prevNode = currNode -> prev;
+    currNode -> prev = NULL;
+    currNode -> next = NULL;
+    prevNode -> next = nextNode;
+    nextNode -> prev = prevNode;
+    delete currNode;
+  }
+
+
+  
+}
+int main(){
+  Node * head = NULL;
+  Node * tail = NULL;
+  insertHead(head,tail,1);
+  insertHead(head,tail,2);
+  insertHead(head,tail,3);
+  insertHead(head,tail,4);
+  deleteNodeByVal(head,tail,1);
+//   inserttail(head,tail,0);
+//   insertATmiddle(head,tail,100,2);
+//   deleteoperations(head,tail,3);
+  print(head);
+}
