@@ -1,0 +1,69 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+     ListNode* middleNode(ListNode* &head) {
+        ListNode * slow = head;
+        ListNode * fast = head;
+
+        while(fast->next != NULL){
+            fast = fast -> next;
+            if(fast->next != NULL){
+                fast = fast -> next;
+                slow = slow -> next;
+            }
+        }
+        return slow;
+    }
+     ListNode *reverse(ListNode * &prevNode , ListNode *&currNode){
+       if(currNode == NULL){
+           return prevNode;
+       }
+       ListNode *nextNode = currNode -> next;
+       currNode -> next = prevNode;
+       prevNode = currNode;
+       currNode = nextNode;
+
+       return reverse(prevNode,currNode);
+    }
+    bool compare(ListNode *&head1 , ListNode *&head2){
+       while( head2 != NULL){
+           if(head1->val != head2->val){
+               return false;
+    
+           }
+           else{
+               head1 = head1->next ;
+               head2 = head2->next;
+           }
+       }
+       return true;
+    }
+
+    bool isPalindrome(ListNode* head) {
+        ListNode * temp = head;
+        ListNode * Middle = middleNode(temp);
+        
+        ListNode * currNode =  Middle -> next;
+    
+        Middle -> next = NULL;
+
+        
+        ListNode * prevNode = NULL;
+        ListNode * rev = reverse(prevNode,currNode);
+        bool answer = compare (temp,prevNode);
+        return answer;
+
+
+
+        
+    }
+};
