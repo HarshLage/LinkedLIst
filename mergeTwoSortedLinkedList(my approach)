@@ -1,0 +1,85 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+void insertAttail(ListNode * &head , ListNode *&tail , int &data){
+  if(head == NULL){
+    //creating a NOde
+    ListNode * newNode = new ListNode(data);
+    //assining
+    head = newNode;
+    tail = newNode;
+  }
+  else{
+    ListNode  *newNode = new ListNode(data);
+
+    tail->next = newNode;
+    tail = newNode;
+
+  }
+}
+  
+
+
+ListNode *sortedList(ListNode* &head1 , ListNode *&head2){
+   ListNode * head = NULL;
+   ListNode * tail = NULL;
+   
+   while(head1!=NULL && head2!=NULL){
+         if((head1->val) > (head2->val)){
+           insertAttail(head,tail,head2->val);
+           head2 = head2->next;
+       }
+
+       else if(head1->val == head2->val){
+           insertAttail(head,tail,head1->val);
+           head1 = head1->next;
+           }
+
+       else{
+           insertAttail(head,tail,head1->val);
+           head1 = head1->next;       
+       }
+   }
+   while( head1 != NULL){
+      insertAttail(head,tail,head1->val);
+      head1 = head1->next;
+   }
+   while( head2!= NULL){
+       insertAttail(head,tail,head2->val);
+       head2 = head2->next;
+   }
+   return head;
+
+}
+    ListNode* mergeTwoLists(ListNode* list1, ListNode* list2) {
+        ListNode * head1 = list1 ;
+        ListNode * head2 = list2;
+
+        if(head1 == NULL && head2 != NULL){
+            return head2;
+        }
+        else if(head1 != NULL && head2 == NULL){
+            return head1;
+        }
+        else if(head1 == NULL && head2 == NULL ){
+            return head1;
+        }
+        else{
+
+ 
+        ListNode * answer = sortedList(list1,list2);
+        return answer;
+
+        
+        }
+    }
+};
