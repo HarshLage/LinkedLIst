@@ -1,0 +1,110 @@
+#include<bits/stdc++.h>
+using namespace std;
+class Node {
+    public :
+    int data;
+    Node * next;
+
+    Node(){
+        this -> next = NULL;
+    }
+    Node(int data){
+        this -> data = data;
+        this -> next  = NULL;
+    }
+};
+
+void insertAthead(Node * &head,Node * &tail,int data){
+    if(head == NULL){
+        Node * newNode  = new Node(data);
+        head = newNode;
+        tail = newNode;
+    }
+    else{
+
+    Node * newNode = new Node(data);
+    newNode -> next = head;
+    head = newNode;
+    }
+    
+}
+void print(Node *&head){
+    Node * temp = head;
+    while(temp!=NULL){
+        cout<<temp->data<<"->";
+        temp = temp -> next;
+    }
+}
+//starting pointing of loop
+int  checkloop(Node *& head){
+    Node * slow = head;
+    Node * fast = head;
+
+    while(fast->next != NULL){
+        fast = fast -> next;
+        if(fast->next != NULL){
+            fast = fast -> next;
+            slow = slow -> next;
+
+        }
+
+        if(fast == slow ){
+            return fast->data;
+            break;
+
+        }
+    }
+    return -1;
+
+
+
+
+}
+//check loop is present or not
+bool checkLoop(Node *&head){
+
+     Node * slow = head;
+    Node * fast = head;
+
+    while(fast->next != NULL){
+        fast = fast -> next;
+        if(fast->next != NULL){
+            fast = fast -> next;
+            slow = slow -> next;
+
+        }
+
+        if(fast == slow ){
+               return true;
+
+        }
+    }
+   return false;
+
+
+
+}
+int main()
+{ 
+  Node * head = NULL;
+  Node * tail = NULL;
+  insertAthead(head,tail,2);
+  insertAthead(head,tail,3);
+  insertAthead(head,tail,4);
+  insertAthead(head,tail,head->next->data);
+  tail -> next = head -> next;
+//   bool ans = checkloop(head);
+int ans = checkloop(head);
+bool answer = checkLoop(head);
+
+if(answer){
+    cout<<"loop is present "<<endl;
+}
+else{
+    cout<<"loop is not present"<<endl;
+}
+  cout<<ans<<endl;
+
+//   print(head);
+  return 0; 
+}
