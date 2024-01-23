@@ -1,0 +1,113 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    vector<int> nodesBetweenCriticalPoints(ListNode* head) {
+
+        vector<int>ans;
+        vector<int>index;
+        vector<int>answer;
+        vector<int>ansi;
+        if(head==NULL || head->next==NULL || head->next -> next==NULL){
+                
+          ans.push_back(-1);
+          ans.push_back(-1);
+          return ans;
+
+        }
+       
+        ListNode * prev = head;
+        ListNode*curr = head->next;
+        ListNode * nextNode = curr->next;
+        
+       
+        int counter = 1;
+      
+        while(nextNode!=NULL){
+              counter++;
+            if((nextNode-> val < curr-> val) && (prev->val <curr->val)){
+                
+                prev = curr;
+                curr = nextNode;
+                nextNode = nextNode->next;
+              
+                index.push_back(counter);
+                
+            
+
+            }
+               
+            
+            else if((nextNode-> val > curr-> val) && (prev->val > curr->val)){
+                    
+                    prev = curr;
+                    curr = nextNode;
+                    nextNode = nextNode->next;
+                    
+                    index.push_back(counter);
+                   
+                }
+
+               
+            
+
+            else{
+                prev = curr;
+                curr = nextNode;
+                nextNode = nextNode->next; 
+                
+
+                    
+
+            }
+
+        } 
+
+        if(index.size()==2){
+            for(int i=0;i<index.size()-1;i++){
+            int answer = index[i+1] - index[i];
+            ans.push_back(answer);
+            ans.push_back(answer);
+          
+            }
+            return ans;
+            
+        }
+        if(index.size()==0 || index.size()==1){
+            ansi.push_back(-1);
+            ansi.push_back(-1);
+            return ansi;
+
+        }
+        else{
+            for(int i=0;i<index.size()-1;i++){
+                int answer = index[index.size()-1] - index[i];
+                ans.push_back(answer); 
+            }
+        sort(ans.begin(),ans.end());
+        int mini = INT_MAX;
+        for(int i=0;i<ans.size();i++){
+            mini = min(ans[i],mini);
+        }
+        int maxi = INT_MIN;
+        for(int i=0;i<ans.size();i++){
+            maxi = max(ans[i],maxi);
+        } 
+
+        answer.push_back(mini);
+        answer.push_back(maxi);
+
+        }
+        
+        return answer;
+    
+    }
+};
